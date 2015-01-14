@@ -1,0 +1,78 @@
+//
+// Dropdown Position Core
+// --------------------------------------------------
+
+.wrapper-dropdown-nav-scrollable {
+    .dropdown-menu {
+        display: block;
+        margin-top: 0;
+        margin-bottom: 0;
+        border: 0;
+        .border-top-radius(0);
+    }
+}
+
+.dropdown-menu {
+    &.dropdown-nav-scrollable {
+        display: block;
+        margin-top: 0;
+        .border-top-radius(0);
+    }
+}
+
+
+// Responsive
+// -------------------------
+
+@media (max-width: @screen-xs-max) {
+    .dropdown-menu {
+        &.dropdown-nav-scrollable {
+            left: 0 !important;
+            width: 100%;
+            min-width: inherit;
+            border-left: none;
+            border-right: none;
+            max-height: 250px;
+            overflow-y: auto;
+
+            .dropdown {
+                > a:after {
+                    .rotate(90deg);
+                }
+
+                > .dropdown-menu {
+                    display: block;
+                    position: relative;
+                    width: 100%;
+                    border-left: none;
+                    border-right: none;
+                    border-bottom: none;
+                    padding-left: 20px;
+                    .border-top-radius(0);
+                    .box-shadow(none);
+                }
+
+                &.open {
+                    > a:after {
+                        border-left-color: inherit;
+                    }
+                }
+            }
+        }
+    }
+
+    .hammer-scroll-content {
+        left: 0 !important;
+        width: 100%;
+        min-width: inherit;
+        border-left: none;
+        border-right: none;
+
+        .dropdown-menu {
+            &.dropdown-nav-scrollable {
+                max-height: inherit;
+                overflow-y: hidden;
+            }
+        }
+    }
+}
