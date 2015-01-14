@@ -23,6 +23,7 @@
  * @typedef {jQuery|undefined} DropdownPosition.$wrapper
  * @typedef {jQuery|undefined} DropdownPosition.$menu
  * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
+ * @typedef {Function}         jQuery.hammerScroll
  */
 (function ($) {
     'use strict';
@@ -46,6 +47,21 @@
         }
 
         return $menu;
+    }
+
+    /**
+     * Get the margin right defined by hammer scroll when native scrollis used.
+     *
+     * @param {jQuery} $element The jquery element
+     *
+     * @return {Number}
+     *
+     * @private
+     */
+    function getNativeHammerScrollMargin($element) {
+        var margin = parseInt($element.css('margin-right'), 0);
+
+        return isNaN(margin) ? 0 : margin;
     }
 
     /**
@@ -95,9 +111,13 @@
             'top': top
         });
         $menu.css({
-            'width': $wrapper.innerWidth(),
+            'width': $wrapper.innerWidth() - getNativeHammerScrollMargin($menu),
             'height': $wrapper.innerHeight()
         });
+
+        if (typeof $.fn.hammerScroll === 'function') {
+            $menu.hammerScroll('resizeScrollbar');
+        }
     }
 
     /**
@@ -155,6 +175,10 @@
 
         if (undefined === self.$menu) {
             return;
+        }
+
+        if (typeof $.fn.hammerScroll === 'function') {
+            self.$menu.hammerScroll('destroy');
         }
 
         self.$restoreMenu.after(self.$menu);
@@ -239,6 +263,10 @@
         self.$wrapper.append(self.$menu);
         $body.append(self.$wrapperMask);
         $body.append(self.$wrapper);
+
+        if (typeof $.fn.hammerScroll === 'function') {
+            self.$menu.hammerScroll({useScroll: true});
+        }
 
         refreshPosition(self.$toggle, self.$wrapper, self.$menu);
     }

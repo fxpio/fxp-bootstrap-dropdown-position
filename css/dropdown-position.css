@@ -5,6 +5,9 @@
   overflow: hidden;
   padding: 0;
 }
+.wrapper-dropdown-position .hammer-scrollbar {
+  z-index: 1031;
+}
 .wrapper-dropdown-position .dropdown-menu {
   display: block;
   position: relative;
