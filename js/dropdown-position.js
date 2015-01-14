@@ -267,7 +267,7 @@
         $body.append(self.$wrapper);
 
         if (typeof $.fn.hammerScroll === 'function') {
-            self.$menu.hammerScroll({useScroll: true});
+            self.$menu.hammerScroll({nativeScroll: true});
         }
 
         refreshPosition(self.$toggle, self.$wrapper, self.$menu);
