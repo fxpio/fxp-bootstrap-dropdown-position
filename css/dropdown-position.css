@@ -38,10 +38,6 @@
     z-index: 1031 !important;
     -webkit-box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.275) !important;
     box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.275) !important;
-    border-top-right-radius: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
   }
   .wrapper-dropdown-position .dropdown-menu > li > a {
     padding-top: 10px;
