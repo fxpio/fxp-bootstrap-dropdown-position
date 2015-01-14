@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <title>Basic example - Sonatra Bootstrap Dropdown Position</title>
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../bower_components/sonatra-hammer-scroll/css/hammer-scroll.css" rel="stylesheet">
+    <link href="../css/dropdown-position.css" rel="stylesheet">
+    <style>
+        body > .container {
+            margin-top: 70px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="head-nav" data-spy="affix" data-offset-top="1"
+     class="navbar navbar-default has-nav-scrollable navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Brand</a>
+    </div>
+    <div class="nav-scrollable is-nav-tabs" data-nav-scroll="true">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Item 1</a></li>
+            <li><a href="#">Item 2</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Item 3<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class=""><a href="#" data-toggle="tab">Item 3.1</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 3.2</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 3.3</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Item 4</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Item 5<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class=""><a href="#" data-toggle="tab">Item 5.1</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.2</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.3</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.4</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.5</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.6</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.7</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.8</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.9</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.10</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.11</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.12</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.13</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.14</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.15</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.16</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.17</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.18</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.19</a></li>
+                    <li class=""><a href="#" data-toggle="tab">Item 5.20</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Item 6</a></li>
+            <li><a href="#">Item 7</a></li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Action <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+
+            <p>This is a paragraph.</p>
+        </div>
+    </div>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/js/dropdown.js"></script>
+<script src="../bower_components/hammerjs/hammer.js"></script>
+<script src="../bower_components/sonatra-hammer-scroll/js/hammer-scroll.js"></script>
+<script src="../js/dropdown-position.js"></script>
+</body>
+</html>
