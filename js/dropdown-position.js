@@ -18,6 +18,11 @@
  * @param {jQuery} $
  *
  * @typedef {DropdownPosition} DropdownPosition
+ * @typedef {jQuery|undefined} DropdownPosition.$toggle
+ * @typedef {jQuery|undefined} DropdownPosition.$wrapperMask
+ * @typedef {jQuery|undefined} DropdownPosition.$wrapper
+ * @typedef {jQuery|undefined} DropdownPosition.$menu
+ * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
  */
 (function ($) {
     'use strict';
@@ -44,96 +49,98 @@
     }
 
     /**
-     * Get parent offset of menu.
+     * Refresh the position of dropdown wrapper.
      *
-     * @param {jQuery} $target
-     *
-     * @return Object (left and top properties)
-     *
-     * @private
-     */
-    function getParentOffset($target) {
-        var $parent = $target.parent();
-
-        if ($parent.get(0) instanceof Window) {
-            return {'top': 0, 'left': 0};
-        }
-
-        return $parent.offset();
-    }
-
-    /**
-     * Action on show dropdown event.
-     *
-     * @param {jQuery.Event|Event} event
+     * @param {jQuery} $toggle  The toggle button of dropdown menu
+     * @param {jQuery} $wrapper The wrapper position of dropdown menu
+     * @param {jQuery} $menu    The dropdown menu
      *
      * @private
      */
-    function onShow(event) {
-        var $menu,
-            $wrapper,
-            parentOffset,
-            left,
-            top,
-            maxLeft,
-            maxTop,
+    function refreshPosition($toggle, $wrapper, $menu) {
+        var padding = 15,
+            left = Math.round($toggle.offset().left),
+            top = Math.round($toggle.offset().top + $toggle.outerHeight() - $(window).eq(0).scrollTop()),
             width,
             height,
             endLeft,
-            endTop;
+            endTop,
+            maxWidth = $(window).width() - padding * 2,
+            maxHeight = $(window).height() - padding * 2;
 
-        $menu = getMenu(event.target);
-        $menu.hammerScroll({useScroll: true, scrollbar: true});
-
-        $wrapper = $menu.parent().eq(0);
-        $wrapper.css('position', 'absolute');
-        $wrapper.css('top', $menu.css('top'));
-        $wrapper.css('left', $menu.css('left'));
-        $wrapper.css('z-index', $menu.css('z-index'));
-        $wrapper.css('border', $menu.css('border'));
-        $wrapper.css('-webkit-box-shadow', $menu.css('-webkit-box-shadow'));
-        $wrapper.css('box-shadow', $menu.css('box-shadow'));
-        $wrapper.css('overflow', 'hidden');
-        $wrapper.css('margin-top', '-1px');
-        $menu.css('position', 'static');
-        $menu.css('top', '0');
-        $menu.css('left', 'inherit');
-        $menu.css('right', 'auto');
-        $menu.css('margin-top', '0');
-        $menu.css('padding-top', '0');
-        $menu.css('border', 'none');
-        $menu.css('-webkit-box-shadow', 'none');
-        $menu.css('box-shadow', 'none');
-        $menu.css('display', 'block');
-
-        parentOffset = getParentOffset($wrapper);
-        left = $wrapper.offset().left;
-        top = $wrapper.offset().top - parentOffset.top;
-        maxLeft = $(window).width();
-        maxTop = $(window).height() + $(window).eq(0).scrollTop() - 50;
-
-        $wrapper.css('max-width', maxLeft);
-        $wrapper.css('max-height', maxTop);
-        $menu.css('max-height', maxTop);
+        $wrapper.css({
+            'left': left,
+            'top': top,
+            'max-width': maxWidth,
+            'max-height': maxHeight
+        });
 
         width = $wrapper.outerWidth();
         height = $wrapper.outerHeight();
         endLeft = left + width;
         endTop = top + height;
 
-        if (left < 0) {
-            $wrapper.css('margin-left', -left);
-        } else if (endLeft > maxLeft) {
-            $wrapper.css('margin-left', -(endLeft - maxLeft));
+        if (endLeft > maxWidth) {
+            left = maxWidth - width + padding;
+        }
+        if (endTop > maxHeight) {
+            top = maxHeight - height + padding;
         }
 
-        if (top < 0) {
-            $wrapper.css('margin-top', -top);
-        } else if (endTop > maxTop) {
-            $wrapper.css('margin-top', -(endTop - maxTop));
+        left = Math.max(left, padding);
+        top = Math.max(top, padding);
+
+        $wrapper.css({
+            'left': left,
+            'top': top
+        });
+        $menu.css({
+            'width': $wrapper.innerWidth(),
+            'height': $wrapper.innerHeight()
+        });
+    }
+
+    /**
+     * Get the zindex of element.
+     *
+     * @param {jQuery} $element The jquery element
+     *
+     * @return {Number}
+     */
+    function getZindex($element) {
+        var zindex = parseInt($element.css('z-index'), 0);
+
+        if (isNaN(zindex)) {
+            zindex = 0;
         }
 
-        $menu.hammerScroll('resizeScrollbar');
+        return zindex;
+    }
+
+    /**
+     * Find the parent zindex.
+     *
+     * @param {jQuery} $element The jquery element
+     *
+     * @return {Number}
+     *
+     * @private
+     */
+    function findParentZindex($element) {
+        var zindex = getZindex($element),
+            $parents = $element.parents(),
+            value,
+            i;
+
+        for (i = 0; i < $parents.length; i += 1) {
+            value = parseInt($parents.eq(i).css('z-index'), 0);
+
+            if (!isNaN(value)) {
+                zindex = Math.max(zindex, value);
+            }
+        }
+
+        return zindex;
     }
 
     /**
@@ -144,36 +151,128 @@
      * @private
      */
     function onHide(event) {
-        var $menu = getMenu(event.target);
+        var self = event.data;
 
-        $menu.hammerScroll('destroy');
-        $menu.css('position', '');
-        $menu.css('top', '');
-        $menu.css('left', '');
-        $menu.css('right', '');
-        $menu.css('margin-top', '');
-        $menu.css('padding-top', '');
-        $menu.css('border', '');
-        $menu.css('-webkit-box-shadow', '');
-        $menu.css('box-shadow', '');
-        $menu.css('max-width', '');
-        $menu.css('max-height', '');
-        $menu.css('overflow', '');
-        $menu.css('display', '');
+        if (undefined === self.$menu) {
+            return;
+        }
+
+        self.$restoreMenu.after(self.$menu);
+        self.$restoreMenu.remove();
+        self.$wrapperMask.remove();
+        self.$wrapper.remove();
+        self.$menu.removeAttr('data-dropdown-restore-id');
+        self.$menu.css({
+            'width': '',
+            'height': ''
+        });
+
+        delete self.$toggle;
+        delete self.$wrapperMask;
+        delete self.$wrapper;
+        delete self.$menu;
+        delete self.$restoreMenu;
     }
 
     /**
-     * Action on window resize event.
+     * Action on show dropdown event.
      *
      * @param {jQuery.Event|Event} event
      *
      * @private
      */
-    function onResize(event) {
-        var $menu = getMenu(event.target);
+    function onShow(event) {
+        var self = event.data,
+            ddId = 'dropdown-menu-original-' + self.guid,
+            $body = $('body'),
+            zindex;
 
-        $menu.removeClass('open');
-        $menu.trigger('shown.bs.dropdown', { relatedTarget: event.target });
+        if (undefined !== self.$menu) {
+            onHide(event);
+        }
+
+        self.$toggle = $(event.target);
+        self.$menu = getMenu(event.target);
+        self.$wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
+        self.$wrapper = $('<div class="wrapper-dropdown-position"></div>');
+
+        zindex = Math.max(getZindex(self.$wrapper), self.$menu);
+        zindex = Math.max(findParentZindex(self.$toggle), zindex);
+
+        self.$wrapperMask.css({
+            'position': 'fixed',
+            'z-index': -1,
+            'left': 0,
+            'right': 0,
+            'top': 0,
+            'bottom': 0
+        });
+        self.$wrapper.css({
+            'z-index': zindex,
+            'border-top-width': self.$menu.css('border-top-width'),
+            'border-top-style': self.$menu.css('border-top-style'),
+            'border-top-color': self.$menu.css('border-top-color'),
+            'border-bottom-width': self.$menu.css('border-bottom-width'),
+            'border-bottom-style': self.$menu.css('border-bottom-style'),
+            'border-bottom-color': self.$menu.css('border-bottom-color'),
+            'border-left-width': self.$menu.css('border-left-width'),
+            'border-left-style': self.$menu.css('border-left-style'),
+            'border-left-color': self.$menu.css('border-left-color'),
+            'border-right-width': self.$menu.css('border-right-width'),
+            'border-right-style': self.$menu.css('border-right-style'),
+            'border-right-color': self.$menu.css('border-right-color'),
+            'box-shadow': self.$menu.css('box-shadow'),
+            'border-top-left-radius': self.$menu.css('border-top-left-radius'),
+            'border-top-right-radius': self.$menu.css('border-top-right-radius'),
+            'border-bottom-left-radius': self.$menu.css('border-bottom-left-radius'),
+            'border-bottom-right-radius': self.$menu.css('border-bottom-right-radius'),
+            'margin-top': self.$menu.css('margin-top'),
+            'margin-bottom': self.$menu.css('margin-bottom'),
+            'margin-left': self.$menu.css('margin-left'),
+            'margin-right': self.$menu.css('margin-right'),
+            'background-color': self.$menu.css('background-color')
+        });
+
+        self.$restoreMenu = $('<div class="dropdown-menu-restore-position"></div>');
+        self.$restoreMenu.attr('data-dropdown-restore-for', ddId);
+        self.$menu.after(self.$restoreMenu);
+        self.$wrapper.append(self.$menu);
+        $body.append(self.$wrapperMask);
+        $body.append(self.$wrapper);
+
+        refreshPosition(self.$toggle, self.$wrapper, self.$menu);
+    }
+
+    /**
+     * Refresh the position.
+     *
+     * @param {jQuery.Event|Event} event
+     *
+     * @private
+     */
+    function externalRefresh(event) {
+        var self = event.data;
+
+        if (undefined !== self.$menu) {
+            refreshPosition(self.$toggle, self.$wrapper, self.$menu);
+        }
+    }
+
+    /**
+     * Close the current dropdown when window is resized.
+     *
+     * @param {jQuery.Event|Event} event
+     *
+     * @private
+     */
+    function externalResize(event) {
+        var self = event.data;
+
+        if (undefined !== self.$toggle) {
+            self.$toggle.removeClass('open');
+            self.$toggle.find('.dropdown-backdrop').remove();
+            onHide(event);
+        }
     }
 
     // DROPDOWN POSITION CLASS DEFINITION
@@ -193,10 +292,11 @@
         this.$element = $(element);
 
         $(document)
-            .on('shown.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown', onShow)
-            .on('hide.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown', onHide);
+            .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShow)
+            .on('hide.bs.dropdown.st.dropdownposition' + this.guid, null, this, onHide);
 
-        $(window).on('shown.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown.open', onResize);
+        $(window).on('resize.st.dropdownposition' + this.guid, null, this, externalResize);
+        $(window).on('scroll.st.dropdownposition' + this.guid, null, this, externalRefresh);
     },
         old;
 
@@ -211,10 +311,11 @@
         onHide(event);
 
         $(document)
-            .off('shown.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown', onShow)
-            .off('hide.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown', onHide);
+            .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShow)
+            .off('hide.bs.dropdown.st.dropdownposition' + this.guid, onHide);
 
-        $(window).off('shown.bs.dropdown.st.dropdownposition' + this.guid, '.dropdown.open', onResize);
+        $(window).off('resize.st.dropdownposition' + this.guid, externalResize);
+        $(window).off('scroll.st.dropdownposition' + this.guid, externalRefresh);
 
         this.$element.removeData('st.dropdownposition');
     };
@@ -263,10 +364,9 @@
     // DROPDOWN POSITION DATA-API
     // ==========================
 
-    $(document)
-        .on('shown.bs.dropdown.st.dropdownposition', '.dropdown', onShow)
-        .on('hide.bs.dropdown.st.dropdownposition', '.dropdown', onHide);
-
-    $(window).on('shown.bs.dropdown.st.dropdownposition', '.dropdown.open', onResize);
+    $(window).on('load', function () {
+        var $this = $(document);
+        Plugin.call($this, $this.data());
+    });
 
 }(jQuery));
