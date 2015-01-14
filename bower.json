@@ -1,0 +1,31 @@
+{
+  "name": "sonatra-bootstrap-dropdown-position",
+  "version": "1.0.0",
+  "authors": [
+    "François Pluchino <francois.pluchino@sonatra.com>"
+  ],
+  "description": "A responsive extension for Bootstrap Dropdown",
+  "main": "js/dropdown-position.js",
+  "keywords": [
+    "bootstrap",
+    "dropdown",
+    "responsive",
+    "position",
+    "jquery"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position",
+  "dependencies": {
+    "bootstrap": ">=3.0",
+    "jquery": ">=1.11.0"
+  },
+  "devDependencies": {
+    "hammerjs": "2.0.*",
+    "sonatra-hammer-scroll": "latest"
+  },
+  "ignore": [
+    "examples",
+    "doc",
+    "README.md"
+  ]
+}
