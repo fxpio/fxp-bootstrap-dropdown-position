@@ -187,6 +187,8 @@
         self.$wrapper.remove();
         self.$menu.removeAttr('data-dropdown-restore-id');
         self.$menu.css({
+            'margin-right': '',
+            'overflow': '',
             'width': '',
             'height': ''
         });
