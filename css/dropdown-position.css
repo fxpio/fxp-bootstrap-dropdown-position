@@ -26,13 +26,8 @@
     z-index: 1031 !important;
   }
   .wrapper-dropdown-position {
-    top: auto !important;
     left: 15px !important;
     right: 15px !important;
-    bottom: 15px !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-bottom: none !important;
     max-width: none !important;
     max-height: 90% !important;
     z-index: 1031 !important;
