@@ -22,6 +22,7 @@
  * @typedef {jQuery|undefined} DropdownPosition.$wrapperMask
  * @typedef {jQuery|undefined} DropdownPosition.$wrapper
  * @typedef {jQuery|undefined} DropdownPosition.$menu
+ * @typedef {jQuery|undefined} DropdownPosition.$contentMenu
  * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
  * @typedef {Function}         jQuery.hammerScroll
  */
@@ -181,7 +182,7 @@
             self.$menu.hammerScroll('destroy');
         }
 
-        self.$restoreMenu.after(self.$menu);
+        self.$restoreMenu.after(self.$contentMenu);
         self.$restoreMenu.remove();
         self.$wrapperMask.remove();
         self.$wrapper.remove();
@@ -197,6 +198,7 @@
         delete self.$wrapperMask;
         delete self.$wrapper;
         delete self.$menu;
+        delete self.$contentMenu;
         delete self.$restoreMenu;
     }
 
@@ -211,7 +213,8 @@
         var self = event.data,
             ddId = 'dropdown-menu-original-' + self.guid,
             $body = $('body'),
-            zindex;
+            zindex,
+            $content;
 
         if (undefined !== self.$menu) {
             onHide(event);
@@ -219,6 +222,7 @@
 
         self.$toggle = $(event.target);
         self.$menu = getMenu(event.target);
+        self.$contentMenu = self.$menu;
         self.$wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
         self.$wrapper = $('<div class="wrapper-dropdown-position"></div>');
 
@@ -267,6 +271,10 @@
         $body.append(self.$wrapper);
 
         if (typeof $.fn.hammerScroll === 'function') {
+            $content = $('<div class="dropdown-position-content"></div>');
+            self.$menu.before($content);
+            $content.append(self.$menu);
+            self.$menu = $content;
             self.$menu.hammerScroll({nativeScroll: true});
         }
 
