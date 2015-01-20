@@ -326,7 +326,7 @@
      */
     var DropdownPosition = function (element, options) {
         this.guid     = jQuery.guid;
-        this.options  = $.extend({}, options);
+        this.options  = $.extend(true, {}, options);
         this.$element = $(element);
 
         $(document)
