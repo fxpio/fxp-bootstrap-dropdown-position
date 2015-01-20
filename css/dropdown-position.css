@@ -26,8 +26,8 @@
     z-index: 1031 !important;
   }
   .wrapper-dropdown-position {
-    left: 15px !important;
-    right: 15px !important;
+    left: 10% !important;
+    right: 10% !important;
     max-width: none !important;
     max-height: 86% !important;
     z-index: 1031 !important;
@@ -37,5 +37,11 @@
   .wrapper-dropdown-position .dropdown-menu > li > a {
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+}
+@media (max-width: 767px) and (orientation: landscape) {
+  .wrapper-dropdown-position {
+    left: 15% !important;
+    right: 15% !important;
   }
 }

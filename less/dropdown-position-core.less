@@ -38,8 +38,8 @@
     }
 
     .wrapper-dropdown-position {
-        left: 15px !important;
-        right: 15px !important;
+        left: 10% !important;
+        right: 10% !important;
         max-width: none !important;
         max-height: 86% !important;
         z-index: @zindex-dropdown-position !important;
@@ -49,5 +49,12 @@
             padding-top: @dropdown-position-item-responsive-padding;
             padding-bottom: @dropdown-position-item-responsive-padding;
         }
+    }
+}
+
+@media (max-width: @screen-xs-max) and (orientation: landscape) {
+    .wrapper-dropdown-position {
+        left: 15% !important;
+        right: 15% !important;
     }
 }
