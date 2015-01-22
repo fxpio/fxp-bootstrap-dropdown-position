@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+/*global define*/
 /*global jQuery*/
 /*global window*/
 /*global Window*/
@@ -17,6 +18,7 @@
 /**
  * @param {jQuery} $
  *
+ * @typedef {object}           define.amd
  * @typedef {DropdownPosition} DropdownPosition
  * @typedef {jQuery|undefined} DropdownPosition.$toggle
  * @typedef {jQuery|undefined} DropdownPosition.$wrapperMask
@@ -26,7 +28,17 @@
  * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
  * @typedef {Function}         jQuery.hammerScroll
  */
-(function ($) {
+(function (factory) {
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'bootstrap/dropdown'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
     'use strict';
 
     /**
@@ -325,7 +337,7 @@
      * @this DropdownPosition
      */
     var DropdownPosition = function (element, options) {
-        this.guid     = jQuery.guid;
+        this.guid     = $.guid;
         this.options  = $.extend(true, {}, options);
         this.$element = $(element);
 
@@ -407,4 +419,4 @@
         Plugin.call($this, $this.data());
     });
 
-}(jQuery));
+}));
