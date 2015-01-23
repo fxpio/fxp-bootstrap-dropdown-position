@@ -194,6 +194,9 @@
             'bootstrap': '../bower_components/bootstrap/js',
             'dropdown-position': '../js/dropdown-position'
         },
+        shim: {
+            'bootstrap/dropdown': ['jquery']
+        },
         deps: ['dropdown-position'],
         callback: function () {
             $(window).trigger('load');
