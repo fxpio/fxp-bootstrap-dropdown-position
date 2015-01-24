@@ -195,9 +195,10 @@
             'sonatra-bootstrap-dropdown-position': '../js/dropdown-position'
         },
         shim: {
-            'bootstrap/dropdown': ['jquery']
+            'bootstrap/dropdown': ['jquery'],
+            'bootstrap/collapse': ['jquery']
         },
-        deps: ['sonatra-bootstrap-dropdown-position'],
+        deps: ['bootstrap/collapse', 'sonatra-bootstrap-dropdown-position'],
         callback: function () {
             $(window).trigger('load');
         }

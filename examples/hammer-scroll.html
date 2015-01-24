@@ -198,10 +198,12 @@
             'sonatra-bootstrap-dropdown-position': '../js/dropdown-position'
         },
         shim: {
-            'bootstrap/dropdown': ['jquery']
+            'bootstrap/dropdown': ['jquery'],
+            'bootstrap/collapse': ['jquery']
         },
         deps: [
             'hammerjs',
+            'bootstrap/collapse',
             'sonatra-hammer-scroll',
             'sonatra-bootstrap-dropdown-position'
         ],
