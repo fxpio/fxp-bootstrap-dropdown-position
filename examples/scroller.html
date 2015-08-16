@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
-    <title>Hammer scroll example - Sonatra Bootstrap Dropdown Position</title>
+    <title>Scroller example - Sonatra Bootstrap Dropdown Position</title>
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="../bower_components/sonatra-hammer-scroll/css/hammer-scroll.css" rel="stylesheet">
+    <link href="../css/scroller.css" rel="stylesheet">
     <link href="../css/dropdown-position.css" rel="stylesheet">
     <style>
         body > .container {
@@ -193,8 +193,7 @@
         paths: {
             'jquery': '../bower_components/jquery/dist/jquery',
             'bootstrap': '../bower_components/bootstrap/js',
-            'hammerjs': '../bower_components/hammerjs/hammer',
-            'sonatra-hammer-scroll': '../bower_components/sonatra-hammer-scroll/js/hammer-scroll',
+            'sonatra-jquery-scroller': '../bower_components/sonatra-jquery-scroller/js/scroller',
             'sonatra-bootstrap-dropdown-position': '../js/dropdown-position'
         },
         shim: {
@@ -202,9 +201,8 @@
             'bootstrap/collapse': ['jquery']
         },
         deps: [
-            'hammerjs',
             'bootstrap/collapse',
-            'sonatra-hammer-scroll',
+            'sonatra-jquery-scroller',
             'sonatra-bootstrap-dropdown-position'
         ],
         callback: function () {

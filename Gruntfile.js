@@ -65,6 +65,7 @@ module.exports = function (grunt) {
                     style: 'expanded'
                 },
                 files: {
+                    "css/scroller.css": "bower_components/sonatra-jquery-scroller/less/scroller.less",
                     "css/dropdown-position.css": "less/dropdown-position.less"
                 }
             }

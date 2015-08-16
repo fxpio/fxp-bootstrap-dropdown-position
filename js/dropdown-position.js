@@ -26,7 +26,7 @@
  * @typedef {jQuery|undefined} DropdownPosition.$menu
  * @typedef {jQuery|undefined} DropdownPosition.$contentMenu
  * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
- * @typedef {Function}         jQuery.hammerScroll
+ * @typedef {Function}         jQuery.scroller
  */
 (function (factory) {
     'use strict';
@@ -63,7 +63,7 @@
     }
 
     /**
-     * Get the margin right defined by hammer scroll when native scrollis used.
+     * Get the margin right defined by scroller when native scrollis used.
      *
      * @param {jQuery} $element The jquery element
      *
@@ -71,7 +71,7 @@
      *
      * @private
      */
-    function getNativeHammerScrollMargin($element) {
+    function getScrollerMargin($element) {
         var margin = parseInt($element.css('margin-right'), 0);
 
         return isNaN(margin) ? 0 : margin;
@@ -124,12 +124,12 @@
             'top': top
         });
         $menu.css({
-            'width': $wrapper.innerWidth() - getNativeHammerScrollMargin($menu),
+            'width': $wrapper.innerWidth() - getScrollerMargin($menu),
             'height': $wrapper.innerHeight()
         });
 
-        if (typeof $.fn.hammerScroll === 'function') {
-            $menu.hammerScroll('resizeScrollbar');
+        if (typeof $.fn.scroller === 'function') {
+            $menu.scroller('resizeScrollbar');
         }
     }
 
@@ -190,8 +190,8 @@
             return;
         }
 
-        if (typeof $.fn.hammerScroll === 'function') {
-            self.$menu.hammerScroll('destroy');
+        if (typeof $.fn.scroller === 'function') {
+            self.$menu.scroller('destroy');
         }
 
         self.$restoreMenu.after(self.$contentMenu);
@@ -282,12 +282,12 @@
         $body.append(self.$wrapperMask);
         $body.append(self.$wrapper);
 
-        if (typeof $.fn.hammerScroll === 'function') {
+        if (typeof $.fn.scroller === 'function') {
             $content = $('<div class="dropdown-position-content"></div>');
             self.$menu.before($content);
             $content.append(self.$menu);
             self.$menu = $content;
-            self.$menu.hammerScroll({nativeScroll: true});
+            self.$menu.scroller();
         }
 
         refreshPosition(self.$toggle, self.$wrapper, self.$menu);
