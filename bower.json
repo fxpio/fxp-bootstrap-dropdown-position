@@ -16,8 +16,8 @@
   "license": "MIT",
   "homepage": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position",
   "dependencies": {
-    "bootstrap": ">=3.0",
-    "jquery": ">=1.11.0"
+    "bootstrap": "^3.3.0",
+    "jquery": "^2.1.0"
   },
   "devDependencies": {
     "requirejs": "~2",
