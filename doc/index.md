@@ -29,3 +29,24 @@ Launch bower:
 ```bash
 $ bower install
 ```
+
+Dev installation
+----------------
+
+### Use NPM
+
+```
+npm install
+```
+
+### Use Bower
+
+```
+bower install
+```
+
+### Use grunt
+
+```
+grunt serve
+```
