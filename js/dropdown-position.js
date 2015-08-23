@@ -90,8 +90,8 @@
     function refreshPosition($wrapper, $menu, menuOffset) {
         var padding = 15,
             usePadding = false,
-            left = Math.round(menuOffset.left),
-            top = Math.round(menuOffset.top - $(window).eq(0).scrollTop()),
+            left = Math.round(menuOffset.left) - parseInt($wrapper.css('border-left-width'), 10),
+            top = Math.round(menuOffset.top - $(window).eq(0).scrollTop()) - parseInt($wrapper.css('border-top-width'), 10),
             width,
             height,
             endLeft,
@@ -106,6 +106,8 @@
             'max-height': maxHeight
         });
 
+        console.log(left);
+        console.log(top);
         width = $wrapper.outerWidth();
         height = $wrapper.outerHeight();
         endLeft = left + width;
