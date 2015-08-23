@@ -212,6 +212,9 @@
         self.$wrapper.removeClass('wrapper-open');
 
         window.setTimeout(function () {
+            if (undefined === self.$menu) {
+                return;
+            }
             if (typeof $.fn.scroller === 'function') {
                 self.$menu.scroller('destroy');
             }
