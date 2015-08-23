@@ -9,6 +9,7 @@
 
 /*global define*/
 /*global jQuery*/
+/*global navigator*/
 /*global window*/
 /*global Window*/
 /*global document*/
@@ -252,6 +253,7 @@
         var self = event.data,
             ddId = 'dropdown-menu-original-' + self.guid,
             $body = $('body'),
+            duration,
             zindex,
             $content;
 
@@ -326,6 +328,19 @@
 
         refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
         self.$wrapper.addClass('wrapper-open');
+
+        if (navigator.userAgent.match(/chrome/i)) {
+            duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
+            window.setTimeout(function () {
+                if (undefined !== self.$wrapper) {
+                    var max = parseInt(self.$wrapper.css('max-height'), 10);
+                    self.$wrapper.css('max-height', (max + 1) + 'px');
+                    window.setTimeout(function () {
+                        self.$wrapper.css('max-height', max + 'px');
+                    }, 10);
+                }
+            }, duration);
+        }
     }
 
     /**
