@@ -26,6 +26,7 @@
  * @typedef {jQuery|undefined} DropdownPosition.$menu
  * @typedef {jQuery|undefined} DropdownPosition.$contentMenu
  * @typedef {jQuery|undefined} DropdownPosition.$restoreMenu
+ * @typedef {object|undefined} DropdownPosition.menuOffset
  * @typedef {Function}         jQuery.scroller
  */
 (function (factory) {
@@ -80,22 +81,22 @@
     /**
      * Refresh the position of dropdown wrapper.
      *
-     * @param {jQuery} $toggle  The toggle button of dropdown menu
-     * @param {jQuery} $wrapper The wrapper position of dropdown menu
-     * @param {jQuery} $menu    The dropdown menu
+     * @param {jQuery} $wrapper   The wrapper position of dropdown menu
+     * @param {jQuery} $menu      The dropdown menu
+     * @param {object} menuOffset The offset left and top on init position of menu
      *
      * @private
      */
-    function refreshPosition($toggle, $wrapper, $menu) {
+    function refreshPosition($wrapper, $menu, menuOffset) {
         var padding = 15,
-            left = Math.round($toggle.offset().left),
-            top = Math.round($toggle.offset().top + $toggle.outerHeight() - $(window).eq(0).scrollTop()),
+            left = Math.round(menuOffset.left),
+            top = Math.round(menuOffset.top - $(window).eq(0).scrollTop()),
             width,
             height,
             endLeft,
             endTop,
-            maxWidth = $(window).width() - padding * 2,
-            maxHeight = $(window).height() - padding * 2;
+            maxWidth = $(window).width() - padding * (menuOffset.left > padding ? 2 : 1),
+            maxHeight = $(window).height() - padding * (menuOffset.top > padding ? 2 : 1);
 
         $wrapper.css({
             'left': left,
@@ -109,15 +110,19 @@
         endLeft = left + width;
         endTop = top + height;
 
-        if (endLeft > maxWidth) {
-            left = maxWidth - width + padding;
-        }
-        if (endTop > maxHeight) {
-            top = maxHeight - height + padding;
+        if (menuOffset.left > padding) {
+            if (endLeft > maxWidth) {
+                left = maxWidth - width + padding;
+            }
+            left = Math.max(left, padding);
         }
 
-        left = Math.max(left, padding);
-        top = Math.max(top, padding);
+        if (menuOffset.top > padding) {
+            if (endTop > maxHeight) {
+                top = maxHeight - height + padding;
+            }
+            top = Math.max(top, padding);
+        }
 
         $wrapper.css({
             'left': left,
@@ -212,6 +217,7 @@
         delete self.$menu;
         delete self.$contentMenu;
         delete self.$restoreMenu;
+        delete self.menuOffset;
     }
 
     /**
@@ -268,15 +274,12 @@
             'border-top-right-radius': self.$menu.css('border-top-right-radius'),
             'border-bottom-left-radius': self.$menu.css('border-bottom-left-radius'),
             'border-bottom-right-radius': self.$menu.css('border-bottom-right-radius'),
-            'margin-top': self.$menu.css('margin-top'),
-            'margin-bottom': self.$menu.css('margin-bottom'),
-            'margin-left': self.$menu.css('margin-left'),
-            'margin-right': self.$menu.css('margin-right'),
             'background-color': self.$menu.css('background-color')
         });
 
         self.$restoreMenu = $('<div class="dropdown-menu-restore-position"></div>');
         self.$restoreMenu.attr('data-dropdown-restore-for', ddId);
+        self.menuOffset = self.$menu.offset();
         self.$menu.after(self.$restoreMenu);
         self.$wrapper.append(self.$menu);
         $body.append(self.$wrapperMask);
@@ -290,7 +293,7 @@
             self.$menu.scroller();
         }
 
-        refreshPosition(self.$toggle, self.$wrapper, self.$menu);
+        refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
     }
 
     /**
@@ -304,7 +307,7 @@
         var self = event.data;
 
         if (undefined !== self.$menu) {
-            refreshPosition(self.$toggle, self.$wrapper, self.$menu);
+            refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
         }
     }
 
