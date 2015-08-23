@@ -89,6 +89,7 @@
      */
     function refreshPosition($wrapper, $menu, menuOffset) {
         var padding = 15,
+            usePadding = false,
             left = Math.round(menuOffset.left),
             top = Math.round(menuOffset.top - $(window).eq(0).scrollTop()),
             width,
@@ -110,14 +111,25 @@
         endLeft = left + width;
         endTop = top + height;
 
-        if (menuOffset.left > padding) {
+        if ($wrapper.hasClass('wrapper-pull-height') && left !== $wrapper.offset().left) {
+            top = $(window).height() / 2 - height / 2;
+            endTop = top + height;
+            maxHeight -=  padding;
+            usePadding = true;
+            $wrapper.css('max-height', maxHeight);
+        }
+
+        if ($wrapper.hasClass('wrapper-pull-right')) {
+            left = Math.max(left, padding);
+
+        } else if (menuOffset.left > padding) {
             if (endLeft > maxWidth) {
                 left = maxWidth - width + padding;
             }
             left = Math.max(left, padding);
         }
 
-        if (menuOffset.top > padding) {
+        if (menuOffset.top > padding || usePadding) {
             if (endTop > maxHeight) {
                 top = maxHeight - height + padding;
             }
@@ -243,6 +255,16 @@
         self.$contentMenu = self.$menu;
         self.$wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
         self.$wrapper = $('<div class="wrapper-dropdown-position"></div>');
+
+        if (self.$menu.hasClass('pull-right')) {
+            self.$wrapperMask.addClass('wrapper-pull-right');
+            self.$wrapper.addClass('wrapper-pull-right');
+        }
+
+        if (self.$menu.hasClass('pull-height')) {
+            self.$wrapperMask.addClass('wrapper-pull-height');
+            self.$wrapper.addClass('wrapper-pull-height');
+        }
 
         zindex = Math.max(getZindex(self.$wrapper), self.$menu);
         zindex = Math.max(findParentZindex(self.$toggle), zindex);
