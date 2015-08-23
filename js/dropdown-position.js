@@ -106,8 +106,6 @@
             'max-height': maxHeight
         });
 
-        console.log(left);
-        console.log(top);
         width = $wrapper.outerWidth();
         height = $wrapper.outerHeight();
         endLeft = left + width;
@@ -203,35 +201,41 @@
      * @private
      */
     function onHide(event) {
-        var self = event.data;
+        var self = event.data,
+            duration;
 
         if (undefined === self.$menu) {
             return;
         }
 
-        if (typeof $.fn.scroller === 'function') {
-            self.$menu.scroller('destroy');
-        }
+        duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
+        self.$wrapper.removeClass('wrapper-open');
 
-        self.$restoreMenu.after(self.$contentMenu);
-        self.$restoreMenu.remove();
-        self.$wrapperMask.remove();
-        self.$wrapper.remove();
-        self.$menu.removeAttr('data-dropdown-restore-id');
-        self.$menu.css({
-            'margin-right': '',
-            'overflow': '',
-            'width': '',
-            'height': ''
-        });
+        window.setTimeout(function () {
+            if (typeof $.fn.scroller === 'function') {
+                self.$menu.scroller('destroy');
+            }
 
-        delete self.$toggle;
-        delete self.$wrapperMask;
-        delete self.$wrapper;
-        delete self.$menu;
-        delete self.$contentMenu;
-        delete self.$restoreMenu;
-        delete self.menuOffset;
+            self.$restoreMenu.after(self.$contentMenu);
+            self.$restoreMenu.remove();
+            self.$wrapperMask.remove();
+            self.$wrapper.remove();
+            self.$menu.removeAttr('data-dropdown-restore-id');
+            self.$menu.css({
+                'margin-right': '',
+                'overflow': '',
+                'width': '',
+                'height': ''
+            });
+
+            delete self.$toggle;
+            delete self.$wrapperMask;
+            delete self.$wrapper;
+            delete self.$menu;
+            delete self.$contentMenu;
+            delete self.$restoreMenu;
+            delete self.menuOffset;
+        }, duration);
     }
 
     /**
@@ -318,6 +322,7 @@
         }
 
         refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
+        self.$wrapper.addClass('wrapper-open');
     }
 
     /**
