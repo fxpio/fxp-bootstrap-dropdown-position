@@ -315,6 +315,7 @@
         self.menuOffset = self.$menu.offset();
         self.$menu.after(self.$restoreMenu);
         self.$wrapper.append(self.$menu);
+        $body.append($('.dropdown-backdrop', self.$restoreMenu.parent()));
         $body.append(self.$wrapperMask);
         $body.append(self.$wrapper);
 
