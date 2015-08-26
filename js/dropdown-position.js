@@ -354,7 +354,7 @@
     function externalRefresh(event) {
         var self = event.data;
 
-        if (undefined !== self.$menu) {
+        if (undefined !== self.$menu && undefined !== self.menuOffset && undefined !== self.menuOffset.left) {
             refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
         }
     }
