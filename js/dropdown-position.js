@@ -97,8 +97,8 @@
             height,
             endLeft,
             endTop,
-            maxWidth = $(window).width() - padding * (menuOffset.left > padding ? 2 : 1),
-            maxHeight = $(window).height() - padding * (menuOffset.top > padding ? 2 : 1);
+            maxWidth = $(window).width() - padding * ($wrapper.hasClass('wrapper-pull-height') ? 2 : 1),
+            maxHeight = $(window).height() - padding * ($wrapper.hasClass('wrapper-pull-height') ? 2 : 1);
 
         $wrapper.css({
             'left': left,
@@ -125,14 +125,14 @@
 
         } else if (menuOffset.left > padding) {
             if (endLeft > maxWidth) {
-                left = maxWidth - width + padding;
+                left = maxWidth - width;
             }
             left = Math.max(left, padding);
         }
 
         if (menuOffset.top > padding || usePadding) {
             if (endTop > maxHeight) {
-                top = maxHeight - height + padding;
+                top = maxHeight - height;
             }
             top = Math.max(top, padding);
         }
