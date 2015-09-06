@@ -267,6 +267,10 @@
         self.$wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
         self.$wrapper = $('<div class="wrapper-dropdown-position"></div>');
 
+        self.$menu.attr('class').split(' ').forEach(function (className) {
+            self.$wrapper.addClass('wrapper-' + className);
+        });
+
         if (self.$menu.hasClass('pull-right')) {
             self.$wrapperMask.addClass('wrapper-pull-right');
             self.$wrapper.addClass('wrapper-pull-right');
