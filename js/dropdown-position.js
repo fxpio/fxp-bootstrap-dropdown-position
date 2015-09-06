@@ -211,6 +211,7 @@
 
         duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
         self.$wrapper.removeClass('wrapper-open');
+        self.$wrapperMask.removeClass('wrapper-open');
 
         window.setTimeout(function () {
             if (undefined === self.$menu) {
@@ -338,6 +339,7 @@
 
         refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
         self.$wrapper.addClass('wrapper-open');
+        self.$wrapperMask.addClass('wrapper-open');
 
         if (navigator.userAgent.match(/chrome/i)) {
             duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
