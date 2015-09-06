@@ -272,6 +272,10 @@
             self.$wrapperMask.addClass('wrapper-' + className);
         });
 
+        if (self.$menu.parent().hasClass('dropup')) {
+            self.$wrapper.addClass('wrapper-dropup');
+        }
+
         if (self.$menu.hasClass('pull-right')) {
             self.$wrapperMask.addClass('wrapper-pull-right');
             self.$wrapper.addClass('wrapper-pull-right');
