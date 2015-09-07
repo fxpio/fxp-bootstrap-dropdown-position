@@ -202,44 +202,55 @@
      * @private
      */
     function onHide(event) {
-        var self = event.data,
+        var $toggle = $(event.target),
+            $menu = $toggle.data('st-menu'),
+            $contentMenu,
+            $wrapper,
+            $wrapperMask,
+            $restoreMenu,
             duration;
 
-        if (undefined === self.$menu) {
+        if (undefined === $menu) {
             return;
         }
 
-        duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
-        self.$wrapper.removeClass('wrapper-open');
-        self.$wrapperMask.removeClass('wrapper-open');
+        $contentMenu = $toggle.data('st-contentMenu');
+        $wrapperMask = $toggle.data('st-wrapperMask');
+        $wrapper = $toggle.data('st-wrapper');
+        $restoreMenu = $toggle.data('st-restoreMenu');
+
+        duration = parseFloat($wrapper.css('transition-duration')) * 1000;
+        $wrapper.removeClass('wrapper-open');
+        $wrapperMask.removeClass('wrapper-open');
 
         window.setTimeout(function () {
-            if (undefined === self.$menu) {
+            if (undefined === $menu) {
                 return;
             }
             if (typeof $.fn.scroller === 'function') {
-                self.$menu.scroller('destroy');
+                $menu.scroller('destroy');
             }
 
-            self.$restoreMenu.after(self.$contentMenu);
-            self.$restoreMenu.remove();
-            self.$wrapperMask.remove();
-            self.$wrapper.remove();
-            self.$menu.removeAttr('data-dropdown-restore-id');
-            self.$menu.css({
+            $restoreMenu.after($contentMenu);
+            $restoreMenu.remove();
+            $wrapperMask.remove();
+            $wrapper.remove();
+            $menu.removeAttr('data-dropdown-restore-id');
+            $menu.css({
                 'margin-right': '',
                 'overflow': '',
                 'width': '',
                 'height': ''
             });
 
-            delete self.$toggle;
-            delete self.$wrapperMask;
-            delete self.$wrapper;
-            delete self.$menu;
-            delete self.$contentMenu;
-            delete self.$restoreMenu;
-            delete self.menuOffset;
+            $toggle
+                .removeData('st-menu')
+                .removeData('st-contentMenu')
+                .removeData('st-wrapperMask')
+                .removeData('st-wrapper')
+                .removeData('st-restoreMenu')
+                .removeData('st-menuOffset');
+
         }, duration);
     }
 
@@ -256,41 +267,52 @@
             $body = $('body'),
             duration,
             zindex,
-            $content;
+            $content,
+            $toggle = $(event.target),
+            $menu = $toggle.data('st-menu'),
+            $contentMenu,
+            $wrapper,
+            $wrapperMask,
+            $restoreMenu,
+            menuOffset;
 
-        if (undefined !== self.$menu) {
+        if (undefined !== $menu) {
             onHide(event);
         }
 
-        self.$toggle = $(event.target);
-        self.$menu = getMenu(event.target);
-        self.$contentMenu = self.$menu;
-        self.$wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
-        self.$wrapper = $('<div class="wrapper-dropdown-position"></div>');
+        $menu = getMenu(event.target);
+        $contentMenu = $menu;
+        $wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
+        $wrapper = $('<div class="wrapper-dropdown-position"></div>');
 
-        self.$menu.attr('class').trim().split(' ').forEach(function (className) {
-            self.$wrapper.addClass('wrapper-' + className);
-            self.$wrapperMask.addClass('wrapper-' + className);
+        $toggle.data('st-menu', $menu);
+        $toggle.data('st-contentMenu', $contentMenu);
+        $toggle.data('st-wrapperMask', $wrapperMask);
+        $toggle.data('st-wrapper', $wrapper);
+
+        $menu.attr('class').trim().split(' ').forEach(function (className) {
+            $wrapper.addClass('wrapper-' + className);
+            $wrapperMask.addClass('wrapper-' + className);
         });
 
-        if (self.$menu.parent().hasClass('dropup')) {
-            self.$wrapper.addClass('wrapper-dropup');
+        if ($menu.parent().hasClass('dropup')) {
+            $wrapper.addClass('wrapper-dropup');
         }
 
-        if (self.$menu.hasClass('pull-right')) {
-            self.$wrapperMask.addClass('wrapper-pull-right');
-            self.$wrapper.addClass('wrapper-pull-right');
+        if ($menu.hasClass('pull-right')) {
+            $wrapperMask.addClass('wrapper-pull-right');
+            $wrapper.addClass('wrapper-pull-right');
         }
 
-        if (self.$menu.hasClass('pull-height')) {
-            self.$wrapperMask.addClass('wrapper-pull-height');
-            self.$wrapper.addClass('wrapper-pull-height');
+        if ($menu.hasClass('pull-height')) {
+            $wrapperMask.addClass('wrapper-pull-height');
+            $wrapper.addClass('wrapper-pull-height');
         }
 
-        zindex = Math.max(getZindex(self.$wrapper), self.$menu);
-        zindex = Math.max(findParentZindex(self.$toggle), zindex);
+        zindex = Math.max(getZindex($wrapper), $menu);
+        zindex = Math.max(findParentZindex($toggle), zindex);
 
-        self.$wrapperMask.css({
+        $wrapperMask.css({
             'position': 'fixed',
             'z-index': -1,
             'left': 0,
@@ -298,57 +320,61 @@
             'top': 0,
             'bottom': 0
         });
-        self.$wrapper.css({
+        $wrapper.css({
             'z-index': zindex,
-            'border-top-width': self.$menu.css('border-top-width'),
-            'border-top-style': self.$menu.css('border-top-style'),
-            'border-top-color': self.$menu.css('border-top-color'),
-            'border-bottom-width': self.$menu.css('border-bottom-width'),
-            'border-bottom-style': self.$menu.css('border-bottom-style'),
-            'border-bottom-color': self.$menu.css('border-bottom-color'),
-            'border-left-width': self.$menu.css('border-left-width'),
-            'border-left-style': self.$menu.css('border-left-style'),
-            'border-left-color': self.$menu.css('border-left-color'),
-            'border-right-width': self.$menu.css('border-right-width'),
-            'border-right-style': self.$menu.css('border-right-style'),
-            'border-right-color': self.$menu.css('border-right-color'),
-            'box-shadow': self.$menu.css('box-shadow'),
-            'border-top-left-radius': self.$menu.css('border-top-left-radius'),
-            'border-top-right-radius': self.$menu.css('border-top-right-radius'),
-            'border-bottom-left-radius': self.$menu.css('border-bottom-left-radius'),
-            'border-bottom-right-radius': self.$menu.css('border-bottom-right-radius'),
-            'background-color': self.$menu.css('background-color')
+            'border-top-width': $menu.css('border-top-width'),
+            'border-top-style': $menu.css('border-top-style'),
+            'border-top-color': $menu.css('border-top-color'),
+            'border-bottom-width': $menu.css('border-bottom-width'),
+            'border-bottom-style': $menu.css('border-bottom-style'),
+            'border-bottom-color': $menu.css('border-bottom-color'),
+            'border-left-width': $menu.css('border-left-width'),
+            'border-left-style': $menu.css('border-left-style'),
+            'border-left-color': $menu.css('border-left-color'),
+            'border-right-width': $menu.css('border-right-width'),
+            'border-right-style': $menu.css('border-right-style'),
+            'border-right-color': $menu.css('border-right-color'),
+            'box-shadow': $menu.css('box-shadow'),
+            'border-top-left-radius': $menu.css('border-top-left-radius'),
+            'border-top-right-radius': $menu.css('border-top-right-radius'),
+            'border-bottom-left-radius': $menu.css('border-bottom-left-radius'),
+            'border-bottom-right-radius': $menu.css('border-bottom-right-radius'),
+            'background-color': $menu.css('background-color')
         });
 
-        self.$restoreMenu = $('<div class="dropdown-menu-restore-position"></div>');
-        self.$restoreMenu.attr('data-dropdown-restore-for', ddId);
-        self.menuOffset = self.$menu.offset();
-        self.$menu.after(self.$restoreMenu);
-        self.$wrapper.append(self.$menu);
-        $body.append($('.dropdown-backdrop', self.$restoreMenu.parent()));
-        $body.append(self.$wrapperMask);
-        $body.append(self.$wrapper);
+        $restoreMenu = $('<div class="dropdown-menu-restore-position"></div>');
+        $restoreMenu.attr('data-dropdown-restore-for', ddId);
+        menuOffset = $menu.offset();
+
+        $toggle.data('st-restoreMenu', $restoreMenu);
+        $toggle.data('st-menuOffset', menuOffset);
+
+        $menu.after($restoreMenu);
+        $wrapper.append($menu);
+        $body.append($('.dropdown-backdrop', $restoreMenu.parent()));
+        $body.append($wrapperMask);
+        $body.append($wrapper);
 
         if (typeof $.fn.scroller === 'function') {
             $content = $('<div class="dropdown-position-content"></div>');
-            self.$menu.before($content);
-            $content.append(self.$menu);
-            self.$menu = $content;
-            self.$menu.scroller();
+            $menu.before($content);
+            $content.append($menu);
+            $menu = $content;
+            $menu.scroller();
         }
 
-        refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
-        self.$wrapper.addClass('wrapper-open');
-        self.$wrapperMask.addClass('wrapper-open');
+        refreshPosition($wrapper, $menu, menuOffset);
+        $wrapper.addClass('wrapper-open');
+        $wrapperMask.addClass('wrapper-open');
 
         if (navigator.userAgent.match(/chrome/i)) {
-            duration = parseFloat(self.$wrapper.css('transition-duration')) * 1000;
+            duration = parseFloat($wrapper.css('transition-duration')) * 1000;
             window.setTimeout(function () {
-                if (undefined !== self.$wrapper) {
-                    var max = parseInt(self.$wrapper.css('max-height'), 10);
-                    self.$wrapper.css('max-height', (max + 1) + 'px');
+                if (undefined !== $wrapper) {
+                    var max = parseInt($wrapper.css('max-height'), 10);
+                    $wrapper.css('max-height', (max + 1) + 'px');
                     window.setTimeout(function () {
-                        self.$wrapper.css('max-height', max + 'px');
+                        $wrapper.css('max-height', max + 'px');
                     }, 10);
                 }
             }, duration);
@@ -363,10 +389,13 @@
      * @private
      */
     function externalRefresh(event) {
-        var self = event.data;
+        var $toggle = $(event.target),
+            $menu = $toggle.data('st-menu'),
+            $wrapper = $toggle.data('st-wrapper'),
+            menuOffset = $toggle.data('st-menuOffset');
 
-        if (undefined !== self.$menu && undefined !== self.menuOffset && undefined !== self.menuOffset.left) {
-            refreshPosition(self.$wrapper, self.$menu, self.menuOffset);
+        if (undefined !== $menu && undefined !== menuOffset && undefined !== menuOffset.left) {
+            refreshPosition($wrapper, $menu, menuOffset);
         }
     }
 
@@ -378,11 +407,11 @@
      * @private
      */
     function externalResize(event) {
-        var self = event.data;
+        var $toggle = $(event.target);
 
-        if (undefined !== self.$toggle) {
-            self.$toggle.removeClass('open');
-            self.$toggle.find('.dropdown-backdrop').remove();
+        if (undefined !== $toggle) {
+            $toggle.removeClass('open');
+            $toggle.find('.dropdown-backdrop').remove();
             onHide(event);
         }
     }
