@@ -413,23 +413,6 @@
         }
     }
 
-    /**
-     * Close the current dropdown when window is resized.
-     *
-     * @param {jQuery.Event|Event} event
-     *
-     * @private
-     */
-    function externalResize(event) {
-        var $toggle = $(event.target);
-
-        if (undefined !== $toggle) {
-            $toggle.removeClass('open');
-            $toggle.find('.dropdown-backdrop').remove();
-            onHide(event);
-        }
-    }
-
     // DROPDOWN POSITION CLASS DEFINITION
     // ==================================
 
@@ -450,8 +433,7 @@
             .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShow)
             .on('hide.bs.dropdown.st.dropdownposition' + this.guid, null, this, onHide);
 
-        $(window).on('resize.st.dropdownposition' + this.guid, null, this, externalResize);
-        $(window).on('scroll.st.dropdownposition' + this.guid, null, this, externalRefresh);
+        $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalRefresh);
     },
         old;
 
@@ -469,8 +451,7 @@
             .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShow)
             .off('hide.bs.dropdown.st.dropdownposition' + this.guid, onHide);
 
-        $(window).off('resize.st.dropdownposition' + this.guid, externalResize);
-        $(window).off('scroll.st.dropdownposition' + this.guid, externalRefresh);
+        $(window).off('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, externalRefresh);
 
         this.$element.removeData('st.dropdownposition');
     };
