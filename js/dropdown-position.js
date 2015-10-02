@@ -206,6 +206,7 @@
             $menu = $toggle.data('st-menu'),
             $contentMenu,
             $wrapper,
+            $wrapperClone,
             $wrapperMask,
             $restoreMenu,
             duration;
@@ -217,41 +218,54 @@
         $contentMenu = $toggle.data('st-contentMenu');
         $wrapperMask = $toggle.data('st-wrapperMask');
         $wrapper = $toggle.data('st-wrapper');
+        $wrapperClone = $($wrapper.clone(false).get(0).outerHTML);
         $restoreMenu = $toggle.data('st-restoreMenu');
-
         duration = parseFloat($wrapper.css('transition-duration')) * 1000;
+
+        if ($wrapperClone.prop('id').length > 0) {
+            $wrapperClone.prop('id', $wrapperClone.prop('id') + '_hide_transition');
+        }
+
+        $wrapper.before($wrapperClone);
+        $wrapper.remove();
         $wrapper.removeClass('wrapper-open');
-        $wrapperMask.removeClass('wrapper-open');
+
+        if (typeof $.fn.scroller === 'function') {
+            $menu.scroller('destroy');
+        }
+
+        $restoreMenu.after($contentMenu);
+        $restoreMenu.remove();
+        $wrapper.remove();
+        $menu.removeAttr('data-dropdown-restore-id');
+        $menu.css({
+            'margin-right': '',
+            'overflow': '',
+            'width': '',
+            'height': ''
+        });
+
+        $toggle
+            .removeData('st-menu')
+            .removeData('st-contentMenu')
+            .removeData('st-wrapperMask')
+            .removeData('st-wrapper')
+            .removeData('st-restoreMenu')
+            .removeData('st-menuOffset');
 
         window.setTimeout(function () {
-            if (undefined === $menu) {
-                return;
-            }
-            if (typeof $.fn.scroller === 'function') {
-                $menu.scroller('destroy');
-            }
+            $wrapperClone.removeClass('wrapper-open');
+            $wrapperMask.removeClass('wrapper-open');
 
-            $restoreMenu.after($contentMenu);
-            $restoreMenu.remove();
-            $wrapperMask.remove();
-            $wrapper.remove();
-            $menu.removeAttr('data-dropdown-restore-id');
-            $menu.css({
-                'margin-right': '',
-                'overflow': '',
-                'width': '',
-                'height': ''
-            });
+            window.setTimeout(function () {
+                if (undefined === $menu) {
+                    return;
+                }
 
-            $toggle
-                .removeData('st-menu')
-                .removeData('st-contentMenu')
-                .removeData('st-wrapperMask')
-                .removeData('st-wrapper')
-                .removeData('st-restoreMenu')
-                .removeData('st-menuOffset');
-
-        }, duration);
+                $wrapperMask.remove();
+                $wrapperClone.remove();
+            }, duration);
+        }, 1);
     }
 
     /**
