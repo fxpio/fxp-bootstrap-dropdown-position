@@ -323,12 +323,13 @@
             $wrapper.addClass('wrapper-pull-height');
         }
 
-        zindex = Math.max(getZindex($wrapper), $menu);
+        zindex = Math.max(getZindex($wrapper), getZindex($menu));
         zindex = Math.max(findParentZindex($toggle), zindex);
+        zindex = Math.max(zindex, 1);
 
         $wrapperMask.css({
             'position': 'fixed',
-            'z-index': -1,
+            'z-index': zindex,
             'left': 0,
             'right': 0,
             'top': 0,
