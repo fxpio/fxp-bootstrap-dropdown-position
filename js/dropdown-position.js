@@ -215,6 +215,8 @@
             return;
         }
 
+        $toggle.data('st-contentContainer').off('scroll.st.dropdownposition' + self.guid, externalClose);
+
         $contentMenu = $toggle.data('st-contentMenu');
         $wrapperMask = $toggle.data('st-wrapperMask');
         $wrapper = $toggle.data('st-wrapper');
@@ -251,7 +253,7 @@
             .removeData('st-wrapperMask')
             .removeData('st-wrapper')
             .removeData('st-restoreMenu')
-            .removeData('st-menuOffset');
+            .removeData('st-contentContainer');
 
         window.setTimeout(function () {
             $wrapperClone.removeClass('wrapper-open');
@@ -303,6 +305,7 @@
         $toggle.data('st-contentMenu', $contentMenu);
         $toggle.data('st-wrapperMask', $wrapperMask);
         $toggle.data('st-wrapper', $wrapper);
+        $toggle.data('st-contentContainer', $toggle.parents('[data-dropdown-position-container]'));
 
         $menu.attr('class').trim().split(' ').forEach(function (className) {
             $wrapper.addClass('wrapper-' + className);
@@ -362,7 +365,6 @@
         menuOffset = $menu.offset();
 
         $toggle.data('st-restoreMenu', $restoreMenu);
-        $toggle.data('st-menuOffset', menuOffset);
 
         $menu.after($restoreMenu);
         $wrapper.append($menu);
@@ -382,6 +384,8 @@
         $wrapper.addClass('wrapper-open');
         $wrapperMask.addClass('wrapper-open');
 
+        $toggle.data('st-contentContainer').on('scroll.st.dropdownposition' + self.guid, null, self, externalClose);
+
         if (navigator.userAgent.match(/chrome/i)) {
             duration = parseFloat($wrapper.css('transition-duration')) * 1000;
             window.setTimeout(function () {
@@ -397,21 +401,20 @@
     }
 
     /**
-     * Refresh the position.
-     *
-     * @param {jQuery.Event|Event} event
+     * Close the dropdown on external event.
      *
      * @private
      */
-    function externalRefresh(event) {
-        var $toggle = $(event.target),
-            $menu = $toggle.data('st-menu'),
-            $wrapper = $toggle.data('st-wrapper'),
-            menuOffset = $toggle.data('st-menuOffset');
+    function externalClose() {
+        $('[data-toggle="dropdown"]').each(function () {
+            var $this = $(this);
 
-        if (undefined !== $menu && undefined !== menuOffset && undefined !== menuOffset.left) {
-            refreshPosition($wrapper, $menu, menuOffset);
-        }
+            if (!$this.parent().hasClass('open')) {
+                return;
+            }
+
+            $this.dropdown('toggle');
+        });
     }
 
     // DROPDOWN POSITION CLASS DEFINITION
@@ -434,7 +437,7 @@
             .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShow)
             .on('hide.bs.dropdown.st.dropdownposition' + this.guid, null, this, onHide);
 
-        $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalRefresh);
+        $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalClose);
     },
         old;
 
@@ -452,7 +455,7 @@
             .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShow)
             .off('hide.bs.dropdown.st.dropdownposition' + this.guid, onHide);
 
-        $(window).off('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, externalRefresh);
+        $(window).off('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, externalClose);
 
         this.$element.removeData('st.dropdownposition');
     };
