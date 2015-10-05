@@ -330,6 +330,7 @@
         zindex = Math.max(findParentZindex($toggle), zindex);
         zindex = Math.max(zindex, 1);
 
+        $('.dropdown-backdrop').css('z-index', zindex);
         $wrapperMask.css({
             'position': 'fixed',
             'z-index': zindex,
