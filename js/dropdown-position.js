@@ -229,7 +229,6 @@
         }
 
         $wrapper.before($wrapperClone);
-        $wrapper.remove();
         $wrapper.removeClass('wrapper-open');
 
         if (typeof $.fn.scroller === 'function') {
