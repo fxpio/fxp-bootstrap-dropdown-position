@@ -195,6 +195,67 @@
     }
 
     /**
+     * Action on keydown event.
+     *
+     * @param {jQuery.Event|Event} event
+     *
+     * @typedef {Object} jQuery.Event.data        The dropdown menu and toggle
+     * @typedef {jQuery} jQuery.Event.data.menu   The dropdown menu
+     * @typedef {jQuery} jQuery.Event.data.toggle The toggle
+     * @typedef {String} jQuery.Event.which       The which
+     *
+     * @private
+     */
+    function onKeydown(event) {
+        var $menu = event.data.menu,
+            $toggle = event.data.toggle,
+            $btn = $('[data-toggle="dropdown"]', $toggle),
+            $items,
+            index;
+
+        if (!/(38|40|27|32)/.test(event.which) || /input|textarea/i.test(event.target.tagName)) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if ($btn.is('.disabled, :disabled')) {
+            return;
+        }
+
+        if (event.which === 27) {
+            $btn.trigger('focus');
+
+            return $btn.trigger('click');
+        }
+
+        $items = $menu.find('li:not(.disabled):visible a');
+
+        if (!$items.length) {
+            return;
+        }
+
+        index = $items.index(event.target);
+
+        // up
+        if (event.which === 38 && index > 0) {
+            index--;
+        }
+
+        // down
+        if (event.which === 40 && index < $items.length - 1) {
+            index++;
+        }
+
+        if (!~index) {
+            index = 0;
+        }
+
+        $items.eq(index).trigger('focus');
+    }
+
+    /**
      * Action on hide dropdown event.
      *
      * @param {jQuery.Event|Event} event
@@ -214,6 +275,9 @@
         if (undefined === $menu) {
             return;
         }
+
+        $toggle.off('keydown.st.dropdownposition.data-api', onKeydown);
+        $menu.off('keydown.st.dropdownposition.data-api', onKeydown);
 
         $toggle.data('st-contentContainer').off('scroll.st.dropdownposition' + self.guid, externalClose);
 
@@ -398,6 +462,9 @@
                 }
             }, duration);
         }
+
+        $toggle.on('keydown.st.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
+        $menu.on('keydown.st.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
     }
 
     /**
