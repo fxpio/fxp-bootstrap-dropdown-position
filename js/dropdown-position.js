@@ -44,6 +44,71 @@
     'use strict';
 
     /**
+     * Get the width of native scrollbar.
+     *
+     * @returns {Number}
+     */
+    function getNativeScrollWidth() {
+        var sbDiv = document.createElement("div"),
+            size;
+        sbDiv.style.width = '100px';
+        sbDiv.style.height = '100px';
+        sbDiv.style.overflow = 'scroll';
+        sbDiv.style.position = 'absolute';
+        sbDiv.style.top = '-9999px';
+        document.body.appendChild(sbDiv);
+        size = sbDiv.offsetWidth - sbDiv.clientWidth;
+        document.body.removeChild(sbDiv);
+
+        return size;
+    }
+
+    /**
+     * Lock the scroll of body.
+     *
+     * @param {DropdownPosition} self The dropdown position instance
+     *
+     * @private
+     */
+    function lockBodyScroll(self) {
+        var bodyPad = parseInt((self.$body.css('padding-right') || 0), 10),
+            hasScrollbar = self.$body.get(0).scrollHeight > document.documentElement.clientHeight
+                && 'hidden' !== self.$body.css('overflow-y');
+
+        if (hasScrollbar) {
+            self.originalBodyPad = document.body.style.paddingRight || '';
+            self.originalBodyOverflowY = document.body.style.overflowY || '';
+
+            self.$body.css({
+                'padding-right': (bodyPad + self.nativeScrollWidth) + 'px',
+                'overflow-y': 'hidden'
+            });
+        }
+    }
+
+    /**
+     * Unlock the scroll of body.
+     *
+     * @param {DropdownPosition} self The dropdown position instance
+     *
+     * @private
+     */
+    function unlockBodyScroll(self) {
+        var hasScrollbar = self.$body.get(0).scrollHeight > document.documentElement.clientHeight
+            && 'hidden' !== self.originalBodyOverflowY;
+
+        if (hasScrollbar) {
+            self.$body.css({
+                'padding-right': self.originalBodyPad,
+                'overflow-y': self.originalBodyOverflowY
+            });
+        }
+
+        self.originalBodyPad = null;
+        self.originalBodyOverflowY = null;
+    }
+
+    /**
      * Get dropdown menu.
      *
      * @param {EventTarget} target The DOM element
@@ -276,6 +341,8 @@
             return;
         }
 
+        unlockBodyScroll(event.data);
+
         $toggle.off('keydown.st.dropdownposition.data-api', onKeydown);
         $menu.off('keydown.st.dropdownposition.data-api', onKeydown);
 
@@ -358,6 +425,8 @@
         if (undefined !== $menu) {
             onHide(event);
         }
+
+        lockBodyScroll(event.data);
 
         $menu = getMenu(event.target);
         $contentMenu = $menu;
@@ -496,9 +565,13 @@
      * @this DropdownPosition
      */
     var DropdownPosition = function (element, options) {
-        this.guid     = $.guid;
-        this.options  = $.extend(true, {}, options);
-        this.$element = $(element);
+        this.guid                  = $.guid;
+        this.options               = $.extend(true, {}, options);
+        this.$element              = $(element);
+        this.$body                 = $('body');
+        this.nativeScrollWidth     = getNativeScrollWidth();
+        this.originalBodyPad       = null;
+        this.originalBodyOverflowY = null;
 
         $(document)
             .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShown)
