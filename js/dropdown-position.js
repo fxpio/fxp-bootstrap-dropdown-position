@@ -65,7 +65,7 @@
     }
 
     /**
-     * Get the margin right defined by scroller when native scrollis used.
+     * Get the margin right defined by scroller when native scroll is used.
      *
      * @param {jQuery} $element The jquery element
      *
