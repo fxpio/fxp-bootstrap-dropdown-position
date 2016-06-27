@@ -334,13 +334,13 @@
     }
 
     /**
-     * Action on show dropdown event.
+     * Action on shown dropdown event.
      *
      * @param {jQuery.Event|Event} event
      *
      * @private
      */
-    function onShow(event) {
+    function onShown(event) {
         var self = event.data,
             ddId = 'dropdown-menu-original-' + self.guid,
             $body = $('body'),
@@ -501,7 +501,7 @@
         this.$element = $(element);
 
         $(document)
-            .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShow)
+            .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShown)
             .on('hide.bs.dropdown.st.dropdownposition' + this.guid, null, this, onHide);
 
         $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalClose);
@@ -519,7 +519,7 @@
         onHide(event);
 
         $(document)
-            .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShow)
+            .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShown)
             .off('hide.bs.dropdown.st.dropdownposition' + this.guid, onHide);
 
         $(window).off('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, externalClose);
