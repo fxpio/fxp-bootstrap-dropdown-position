@@ -292,7 +292,7 @@
             return $btn.trigger('click');
         }
 
-        $items = $menu.find('li:not(.disabled):visible a');
+        $items = $menu.find('li:not(.disabled):visible a:not(.btn), li:visible a.btn:not(.disabled)');
 
         if (!$items.length) {
             return;
@@ -577,6 +577,53 @@
         $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalClose);
     },
         old;
+
+    /**
+     * Refresh the position.
+     *
+     * @param {element|jQuery} menu   The original dropdown menu
+     * @param {element|jQuery} toggle The original dropdown menu
+     *
+     * @this DropdownPosition
+     */
+    DropdownPosition.prototype.refresh = function (menu, toggle) {
+        var $menu = $(menu),
+            $toggle = $(toggle),
+            $wrapper = $menu.parents('.wrapper-dropdown-position'),
+            $content = $wrapper.find('.dropdown-position-content'),
+            left,
+            width;
+
+        if (!$menu.hasClass('dropdown-menu') || $wrapper.length === 0) {
+            return;
+        }
+
+        left = $wrapper.offset().left;
+        width = $wrapper.width();
+
+        $content.css({
+            width: '',
+            height: ''
+        });
+
+        $content.css({
+            width: $wrapper.width(),
+            height: $wrapper.height()
+        });
+
+        if ($wrapper.hasClass('wrapper-pull-right')) {
+            console.log($toggle.offset());
+
+            if ($wrapper.width() !== width) {
+                left = left + (width - $wrapper.width());
+                $wrapper.css('left', left);
+            }
+        }
+
+        if (typeof $.fn.scroller === 'function') {
+            $content.scroller('resizeScrollbar');
+        }
+    };
 
     /**
      * Destroy instance.
