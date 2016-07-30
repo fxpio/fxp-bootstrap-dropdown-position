@@ -612,8 +612,6 @@
         });
 
         if ($wrapper.hasClass('wrapper-pull-right')) {
-            console.log($toggle.offset());
-
             if ($wrapper.width() !== width) {
                 left = left + (width - $wrapper.width());
                 $wrapper.css('left', left);
