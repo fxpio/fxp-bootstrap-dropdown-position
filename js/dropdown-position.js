@@ -423,9 +423,12 @@
             onHide(event);
         }
 
-        lockBodyScroll(event.data);
-
         $menu = getMenu(event.target);
+
+        $menu.css('display', 'none');
+        lockBodyScroll(event.data);
+        $menu.css('display', '');
+
         $contentMenu = $menu;
         $wrapperMask = $('<div class="wrapper-dropdown-position-mask"></div>');
         $wrapper = $('<div class="wrapper-dropdown-position"></div>');
