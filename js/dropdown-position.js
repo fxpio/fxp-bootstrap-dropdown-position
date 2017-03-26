@@ -35,7 +35,7 @@
 
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['jquery', 'bootstrap/dropdown'], factory);
+        define(['jquery', 'bootstrap/js/dropdown'], factory);
     } else {
         // Browser globals
         factory(jQuery);

@@ -192,18 +192,18 @@
     var require = {
         paths: {
             'jquery': '../bower_components/jquery/dist/jquery',
-            'bootstrap': '../bower_components/bootstrap/js',
-            'sonatra-jquery-scroller': '../bower_components/sonatra-jquery-scroller/js/scroller',
-            'sonatra-bootstrap-dropdown-position': '../js/dropdown-position'
+            'bootstrap': '../bower_components/bootstrap',
+            'sonatra-jquery-scroller': '../bower_components/sonatra-jquery-scroller',
+            'sonatra-bootstrap-dropdown-position': '..'
         },
         shim: {
-            'bootstrap/dropdown': ['jquery'],
-            'bootstrap/collapse': ['jquery']
+            'bootstrap/js/dropdown': ['jquery'],
+            'bootstrap/js/collapse': ['jquery']
         },
         deps: [
-            'bootstrap/collapse',
-            'sonatra-jquery-scroller',
-            'sonatra-bootstrap-dropdown-position'
+            'bootstrap/js/collapse',
+            'sonatra-jquery-scroller/js/scroller',
+            'sonatra-bootstrap-dropdown-position/js/dropdown-position'
         ],
         callback: function () {
             $(window).trigger('load');
