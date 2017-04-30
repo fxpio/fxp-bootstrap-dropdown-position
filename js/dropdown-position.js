@@ -649,7 +649,9 @@
     // DROPDOWN POSITION PLUGIN DEFINITION
     // ===================================
 
-    function Plugin(option, value) {
+    function Plugin(option) {
+        var args = Array.prototype.slice.call(arguments, 1);
+
         return this.each(function () {
             var $this   = $(this),
                 data    = $this.data('st.dropdownposition'),
@@ -665,7 +667,7 @@
             }
 
             if (typeof option === 'string') {
-                data[option](value);
+                data[option].apply(data, args);
             }
         });
     }
