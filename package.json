@@ -18,7 +18,7 @@
     "url": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position.git"
   },
   "bugs": {
-    "url" : "https://github.com/sonatra/sonatra-bootstrap-dropdown-position/issues"
+    "url": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position/issues"
   },
   "engines": {},
   "main": "js/dropdown-position.js",
