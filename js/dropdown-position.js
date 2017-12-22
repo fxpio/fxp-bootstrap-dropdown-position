@@ -118,7 +118,7 @@
         var $menu = $('.dropdown-menu', target),
             menuId;
 
-        if (0 === $menu.size()) {
+        if (0 === $menu.length) {
             menuId = $('.dropdown-menu-restore-position', target).attr('data-dropdown-restore-for');
             $menu = $('[data-dropdown-restore-id=' + menuId + ']');
         }
