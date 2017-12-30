@@ -13,7 +13,7 @@ Installation
 ------------
 
 ```
-npm install @sonatra/bootstrap-dropdown-position --save
+npm install @fxp/bootstrap-dropdown-position --save
 ```
 
 Dev installation

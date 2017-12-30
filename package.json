@@ -1,8 +1,8 @@
 {
-  "name": "@sonatra/bootstrap-dropdown-position",
+  "name": "@fxp/bootstrap-dropdown-position",
   "version": "1.0.0",
   "license": "MIT",
-  "author": "François Pluchino <francois.pluchino@sonatra.com>",
+  "author": "François Pluchino <francois.pluchino@gmail.com>",
   "contributors": [],
   "description": "A responsive extension for Bootstrap Dropdown",
   "keywords": [
@@ -12,13 +12,13 @@
     "position",
     "jquery"
   ],
-  "homepage": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position",
+  "homepage": "https://github.com/fxpio/fxp-bootstrap-dropdown-position",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position.git"
+    "url": "https://github.com/fxpio/fxp-bootstrap-dropdown-position.git"
   },
   "bugs": {
-    "url": "https://github.com/sonatra/sonatra-bootstrap-dropdown-position/issues"
+    "url": "https://github.com/fxpio/fxp-bootstrap-dropdown-position/issues"
   },
   "engines": {},
   "main": "js/dropdown-position.js",
@@ -27,7 +27,7 @@
     "jquery": "^2.2.0||^3.2.0"
   },
   "devDependencies": {
-    "@sonatra/jquery-scroller": "git://github.com/sonatra/sonatra-jquery-scroller.git#master",
+    "@fxp/jquery-scroller": "git://github.com/fxpio/fxp-jquery-scroller.git#master",
     "grunt": "^1.0.1",
     "grunt-browser-sync": "^2.2.0",
     "grunt-cli": "^1.2.0",

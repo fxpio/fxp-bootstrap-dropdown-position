@@ -1,7 +1,7 @@
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -340,10 +340,10 @@
 
         unlockBodyScroll(event.data);
 
-        $toggle.off('keydown.st.dropdownposition.data-api', onKeydown);
-        $menu.off('keydown.st.dropdownposition.data-api', onKeydown);
+        $toggle.off('keydown.fxp.dropdownposition.data-api', onKeydown);
+        $menu.off('keydown.fxp.dropdownposition.data-api', onKeydown);
 
-        $toggle.data('st-contentContainer').off('scroll.st.dropdownposition' + self.guid, externalClose);
+        $toggle.data('st-contentContainer').off('scroll.fxp.dropdownposition' + self.guid, externalClose);
 
         $contentMenu = $toggle.data('st-contentMenu');
         $wrapperMask = $toggle.data('st-wrapperMask');
@@ -517,7 +517,7 @@
         $wrapper.addClass('wrapper-open');
         $wrapperMask.addClass('wrapper-open');
 
-        $toggle.data('st-contentContainer').on('scroll.st.dropdownposition' + self.guid, null, self, externalClose);
+        $toggle.data('st-contentContainer').on('scroll.fxp.dropdownposition' + self.guid, null, self, externalClose);
 
         if (navigator.userAgent.match(/chrome/i)) {
             duration = parseFloat($wrapper.css('transition-duration')) * 1000;
@@ -532,8 +532,8 @@
             }, duration);
         }
 
-        $toggle.on('keydown.st.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
-        $menu.on('keydown.st.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
+        $toggle.on('keydown.fxp.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
+        $menu.on('keydown.fxp.dropdownposition.data-api', null, {menu: $menu, toggle: $toggle}, onKeydown);
     }
 
     /**
@@ -574,10 +574,10 @@
         this.originalBodyOverflowY = null;
 
         $(document)
-            .on('shown.bs.dropdown.st.dropdownposition' + this.guid, null, this, onShown)
-            .on('hide.bs.dropdown.st.dropdownposition' + this.guid, null, this, onHide);
+            .on('shown.bs.dropdown.fxp.dropdownposition' + this.guid, null, this, onShown)
+            .on('hide.bs.dropdown.fxp.dropdownposition' + this.guid, null, this, onHide);
 
-        $(window).on('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, null, this, externalClose);
+        $(window).on('resize.fxp.dropdownposition scroll.fxp.dropdownposition' + this.guid, null, this, externalClose);
     },
         old;
 
@@ -637,10 +637,10 @@
         onHide(event);
 
         $(document)
-            .off('shown.bs.dropdown.st.dropdownposition' + this.guid, onShown)
-            .off('hide.bs.dropdown.st.dropdownposition' + this.guid, onHide);
+            .off('shown.bs.dropdown.fxp.dropdownposition' + this.guid, onShown)
+            .off('hide.bs.dropdown.fxp.dropdownposition' + this.guid, onHide);
 
-        $(window).off('resize.st.dropdownposition scroll.st.dropdownposition' + this.guid, externalClose);
+        $(window).off('resize.fxp.dropdownposition scroll.fxp.dropdownposition' + this.guid, externalClose);
 
         this.$element.removeData('st.dropdownposition');
     };

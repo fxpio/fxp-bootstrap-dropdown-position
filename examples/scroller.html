@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
-    <title>Scroller example - Sonatra Bootstrap Dropdown Position</title>
+    <title>Scroller example - Fxp Bootstrap Dropdown Position</title>
     <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="../css/scroller.css" rel="stylesheet">
     <link href="../css/dropdown-position.css" rel="stylesheet">
@@ -193,8 +193,8 @@
         paths: {
             'jquery': '../node_modules/jquery/dist/jquery',
             'bootstrap': '../node_modules/bootstrap',
-            'sonatra-jquery-scroller': '../node_modules/@sonatra/jquery-scroller',
-            'sonatra-bootstrap-dropdown-position': '..'
+            'fxp-jquery-scroller': '../node_modules/@fxp/jquery-scroller',
+            'fxp-bootstrap-dropdown-position': '..'
         },
         shim: {
             'bootstrap/js/dropdown': ['jquery'],
@@ -202,8 +202,8 @@
         },
         deps: [
             'bootstrap/js/collapse',
-            'sonatra-jquery-scroller/js/scroller',
-            'sonatra-bootstrap-dropdown-position/js/dropdown-position'
+            'fxp-jquery-scroller/js/scroller',
+            'fxp-bootstrap-dropdown-position/js/dropdown-position'
         ],
         callback: function () {
             $(window).trigger('load');
