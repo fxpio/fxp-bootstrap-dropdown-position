@@ -27,7 +27,7 @@
     "jquery": "^2.2.0||^3.2.0"
   },
   "devDependencies": {
-    "@fxp/jquery-scroller": "git://github.com/fxpio/fxp-jquery-scroller.git#master",
+    "@fxp/jquery-scroller": "github:fxpio/fxp-jquery-scroller#master",
     "grunt": "^1.0.1",
     "grunt-browser-sync": "^2.2.0",
     "grunt-cli": "^1.2.0",
