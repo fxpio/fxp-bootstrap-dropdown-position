@@ -28,6 +28,7 @@
   "engines": {},
   "main": "js/dropdown-position.js",
   "dependencies": {
+    "@fxp/jquery-pluginify": "github:fxpio/fxp-jquery-pluginify#master",
     "bootstrap": "^3.3.7",
     "jquery": "^2.2.0||^3.2.0"
   },
