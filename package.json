@@ -34,10 +34,8 @@
   },
   "devDependencies": {
     "@fxp/jquery-scroller": "github:fxpio/fxp-jquery-scroller#master",
-    "@symfony/webpack-encore": "^0.20.1",
-    "copy-webpack-plugin": "^4.5.1",
-    "less": "^3.0.4",
-    "less-loader": "^4.1.0",
-    "uglifyjs-webpack-plugin": "^1.2.5"
+    "@symfony/webpack-encore": "^0.22.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0"
   }
 }

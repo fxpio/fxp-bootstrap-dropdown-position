@@ -8,31 +8,22 @@
  */
 
 const Encore = require('@symfony/webpack-encore');
-const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const config = Encore
+module.exports = Encore
     .setOutputPath('build/')
     .setPublicPath('/build')
-    .autoProvidejQuery()
+    .disableSingleRuntimeChunk()
     .enableSourceMaps(!Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
     .cleanupOutputBeforeBuild()
+    .autoProvidejQuery()
     .enableLessLoader()
     .addEntry('main', './examples/main.js')
     .addEntry('main-scroller', './examples/main-scroller.js')
-    .addPlugin(new CopyWebpackPlugin([
-        { from: './examples', to: '.', test: /.html$/ }
-    ]))
+    .copyFiles({
+        from: './examples',
+        to: './[path][name].[ext]',
+        pattern: /\.(html)$/
+    })
     .getWebpackConfig()
 ;
-
-// Replace Webpack Uglify Plugin
-if (Encore.isProduction()) {
-    config.plugins = config.plugins.filter(
-        plugin => !(plugin instanceof webpack.optimize.UglifyJsPlugin)
-    );
-    config.plugins.push(new UglifyJsPlugin());
-}
-
-module.exports = config;
