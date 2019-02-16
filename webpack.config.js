@@ -13,17 +13,25 @@ module.exports = Encore
     .setOutputPath('build/')
     .setPublicPath('/build')
     .disableSingleRuntimeChunk()
-    .enableSourceMaps(!Encore.isProduction())
-    .enableVersioning(Encore.isProduction())
-    .cleanupOutputBeforeBuild()
     .autoProvidejQuery()
+    .enableSourceMaps(!Encore.isProduction())
+    .cleanupOutputBeforeBuild()
     .enableLessLoader()
+    .addLoader(
+        {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['@babel/preset-env'],
+            },
+        }
+    )
     .addEntry('main', './examples/main.js')
     .addEntry('main-scroller', './examples/main-scroller.js')
     .copyFiles({
         from: './examples',
-        to: './[path][name].[ext]',
-        pattern: /\.(html)$/
+        to: '[name].[ext]',
+        pattern: /.html$/
     })
     .getWebpackConfig()
 ;
