@@ -28,12 +28,12 @@
   "engines": {},
   "main": "js/dropdown-position.js",
   "dependencies": {
-    "@fxp/jquery-pluginify": "github:fxpio/fxp-jquery-pluginify#master",
+    "@fxp/jquery-pluginify": "github:fxpio/fxp-jquery-pluginify#semver:^1.0.0",
     "bootstrap": "^3.3.7",
     "jquery": "^2.2.0||^3.2.0"
   },
   "devDependencies": {
-    "@fxp/jquery-scroller": "github:fxpio/fxp-jquery-scroller#master",
+    "@fxp/jquery-scroller": "github:fxpio/fxp-jquery-scroller#semver:^1.0.0",
     "@symfony/webpack-encore": "^0.23.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0"
